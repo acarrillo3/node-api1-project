@@ -76,5 +76,17 @@ server.delete(`/api/users/:id`, (req, res) => {
     })
 })
 
+// update a user with specified id 
+server.put(`api/users/:id`, (req, res) => {
+    Users.update(req.params.id, req.body)
+    .then(update => {
+        res.status(200).json(updated)
+    })
+    .catch(err => {
+        res.status(500).json({ errorMessage: "The user information could not be modified."})
+    })
+})
+
+
 const port = 5000;
 server.listen(port, () => console.log("Server is running on port", port));
