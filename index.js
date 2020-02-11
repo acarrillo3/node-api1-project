@@ -63,7 +63,17 @@ server.get(`api/users/:id`, (req, res) => {
             res.status(500).json({ errorMessage: "The user information could not be retrieved."})
         })
     }
+})
 
+// delete a user by id 
+server.delete(`/api/users/:id`, (req, res) => {
+    Users.remove(req.params.id)// need 404 error when the user can't be found by specified id
+    .then(remove => {
+        res.status(200).json(removed)
+    })
+    .catch(err => {
+        res.status(500).json({ errorMessage: "The user could not be removed"})
+    })
 })
 
 const port = 5000;
