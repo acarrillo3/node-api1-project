@@ -47,22 +47,19 @@ server.get("/api/users", (req, res) => {
 // get a user by id
 server.get(`api/users/:id`, (req, res) => {
     const {id} = req.params;
-    if (!req.body.id) {
+    Users.findById(id)
+    .then(user => {
+    if (user) {
         res
-        .status(404)
-        .json({
-            errorMessage: "The user with the specified ID does not exist"
-        })
+        .status(200).json(user)
     } else {
-        Users.findById()
-        .then(user => {
-            res.status(200).json(user)
-        })
+        res.status(404).json({ errorMessage: "The user with the specified ID does not exist" })
+        }
+    })
         .catch(err => {
             res.status(500).json({ errorMessage: "The user information could not be retrieved."})
         })
-    }
-})
+    })
 
 // delete a user by id 
 server.delete(`/api/users/:id`, (req, res) => {
