@@ -64,8 +64,12 @@ server.get(`api/users/:id`, (req, res) => {
 // delete a user by id 
 server.delete(`/api/users/:id`, (req, res) => {
     Users.remove(req.params.id)// need 404 error when the user can't be found by specified id
-    .then(remove => {
-        res.status(200).json(removed)
+    .then(removed => {
+        if (removed === 0) {
+            res.status(404).json({ errorMessage: "The user with the specified id does not exist."})
+        } else {
+            res.status(200).json({ message: `Successfully removed ${removed} user`})
+        }
     })
     .catch(err => {
         res.status(500).json({ errorMessage: "The user could not be removed"})
