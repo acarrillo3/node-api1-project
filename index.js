@@ -7,7 +7,7 @@ const server = express();
 server.use(express.json());
 
 server.get("/", (req, res) => {
-  res.status(200).json({ name: "Ana" });
+  res.status(200).json({ name: "Ana", bio: "Parent" });
 });
 
 // add user
@@ -43,6 +43,27 @@ server.get("/api/users", (req, res) => {
     .catch(err => {
         res.status(500).json({errorMessage: "The users information could not be retrieved."})
     })
+})
+
+// get a user by id
+server.get(`api/users/:id`, (req, res) => {
+    const {id} = req.params;
+    if (!req.body.id) {
+        res
+        .status(404)
+        .json({
+            errorMessage: "The user with the specified ID does not exist"
+        })
+    } else {
+        Users.findById()
+        .then(user => {
+            res.status(200).json(user)
+        })
+        .catch(err => {
+            res.status(500).json({ errorMessage: "The user information could not be retrieved."})
+        })
+    }
+
 })
 
 const port = 5000;
