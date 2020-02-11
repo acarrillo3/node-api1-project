@@ -12,7 +12,6 @@ server.get("/", (req, res) => {
 
 // add user
 server.post("/api/users", (req, res) => {
-  console.log(req.body);
   if (!req.body.name || !res.body.bio) {
     res
       .status(400)
@@ -21,14 +20,14 @@ server.post("/api/users", (req, res) => {
     const newUser = req.body;
     Users.insert(newUser)
       .then(user => {
-        res.status(201).json(user);
+        res.status(201).json(...user, ...req.body);
       })
       .catch(err => {
         res
           .status(500)
           .json({
             errorMessage:
-              "There was an error while ssaving the user to the database"
+              "There was an error while saving the user to the database"
           });
       });
   }
